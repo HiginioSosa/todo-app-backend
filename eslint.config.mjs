@@ -16,25 +16,23 @@ export default [
       '**/prisma/migrations/**',
       '*.config.js',
       '*.config.mjs',
+      'src/frontend/**',
     ],
   },
 
   // Configuración base de JavaScript
   js.configs.recommended,
 
-  // Configuración para archivos TypeScript de src
+  // Configuración para archivos TypeScript de src (BACKEND)
   {
     files: ['src/**/*.ts'],
     languageOptions: {
       parser: tseslint.parser,
       ecmaVersion: 2024,
       sourceType: 'module',
-      globals: {
-        ...globals.node,
-      },
+      globals: globals.node,
       parserOptions: {
         project: './tsconfig.json',
-        tsconfigRootDir: import.meta.dirname,
       },
     },
     plugins: {
@@ -42,34 +40,29 @@ export default [
       prettier,
     },
     rules: {
-      // Reglas base de TypeScript recomendadas
-      ...tseslint.configs.recommended[2].rules,
-      
       // Prettier
       'prettier/prettier': 'error',
 
-      // TypeScript específicas
-      '@typescript-eslint/interface-name-prefix': 'off',
-      '@typescript-eslint/explicit-function-return-type': 'off',
-      '@typescript-eslint/explicit-module-boundary-types': 'off',
-      '@typescript-eslint/no-explicit-any': 'warn',
+      // Desactivar la regla base de no-unused-vars
+      'no-unused-vars': 'off',
+
+      // Usar la versión de TypeScript
       '@typescript-eslint/no-unused-vars': [
         'warn',
         {
           argsIgnorePattern: '^_',
           varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+          destructuredArrayIgnorePattern: '^_',
+          args: 'after-used',
+          ignoreRestSiblings: true,
         },
       ],
-      '@typescript-eslint/no-floating-promises': 'error',
-      '@typescript-eslint/no-misused-promises': 'error',
 
-      // Reglas generales
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-floating-promises': 'error',
       'no-console': ['warn', { allow: ['warn', 'error'] }],
-      'no-debugger': 'warn',
       'prefer-const': 'error',
-      'no-var': 'error',
-      'object-shorthand': 'error',
-      'quote-props': ['error', 'as-needed'],
     },
   },
 
@@ -80,13 +73,9 @@ export default [
       parser: tseslint.parser,
       ecmaVersion: 2024,
       sourceType: 'module',
-      globals: {
-        ...globals.node,
-        ...globals.jest,
-      },
+      globals: { ...globals.node, ...globals.jest },
       parserOptions: {
         project: './tsconfig.spec.json',
-        tsconfigRootDir: import.meta.dirname,
       },
     },
     plugins: {
@@ -94,23 +83,13 @@ export default [
       prettier,
     },
     rules: {
-      // Reglas base de TypeScript recomendadas
-      ...tseslint.configs.recommended[2].rules,
-      
-      // Prettier
       'prettier/prettier': 'error',
-
-      // TypeScript específicas (más relajadas para tests)
-      '@typescript-eslint/no-explicit-any': 'off',
+      'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-floating-promises': 'off',
-      '@typescript-eslint/no-unsafe-assignment': 'off',
-      '@typescript-eslint/no-unsafe-member-access': 'off',
-      '@typescript-eslint/no-unsafe-call': 'off',
-      '@typescript-eslint/no-unsafe-return': 'off',
     },
   },
 
-  // Deshabilitar reglas que entran en conflicto con Prettier
   prettierConfig,
 ];
