@@ -1,98 +1,193 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# To-Do App - Full Stack Application
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Aplicación completa de gestión de tareas construida con NestJS, React, TypeScript, PostgreSQL y Prisma.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 🚀 Características
 
-## Description
+### Backend
+- ✅ API RESTful con NestJS
+- ✅ Autenticación JWT
+- ✅ Base de datos PostgreSQL con Prisma ORM
+- ✅ Documentación Swagger/OpenAPI
+- ✅ Validación de datos con class-validator
+- ✅ Dockerización completa
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### Frontend
+- ✅ React 19 con TypeScript
+- ✅ Vite para desarrollo rápido
+- ✅ Tailwind CSS para estilos
+- ✅ Componentes reutilizables
+- ✅ Context API para manejo de estado
+- ✅ Interfaz responsive y moderna
 
-## Project setup
+## 📋 Requisitos Previos
 
+- Node.js 22.x
+- Docker y Docker Compose
+- npm o yarn
+
+## 🛠️ Instalación
+
+### 1. Clonar el repositorio
 ```bash
-$ npm install
+git clone <tu-repositorio>
+cd todo-app-backend
 ```
 
-## Compile and run the project
-
+### 2. Instalar dependencias
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm install
 ```
 
-## Run tests
+### 3. Configurar variables de entorno
 
+Copia el archivo `.env.example` a `.env` y configura las variables:
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+cp .env.example .env
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
+### 4. Levantar la base de datos
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+docker-compose up postgres -d
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### 5. Ejecutar migraciones
+```bash
+npm run prisma:migrate
+```
 
-## Resources
+## 🚦 Ejecutar la Aplicación
 
-Check out a few resources that may come in handy when working with NestJS:
+### Desarrollo (Backend + Frontend)
+```bash
+# Ejecutar ambos servidores simultáneamente
+npm run dev:all
+```
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+### Solo Backend
+```bash
+npm run start:dev
+```
 
-## Support
+El backend estará disponible en http://localhost:3000
+Documentación Swagger: http://localhost:3000/api/docs
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### Solo Frontend
+```bash
+npm run frontend:dev
+```
 
-## Stay in touch
+El frontend estará disponible en http://localhost:5173
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## 📦 Scripts Disponibles
 
-## License
+### Backend
+- `npm run start:dev` - Iniciar backend en modo desarrollo
+- `npm run start:prod` - Iniciar backend en producción
+- `npm run build` - Compilar backend
+- `npm run lint` - Ejecutar ESLint
+- `npm run format` - Formatear código con Prettier
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+### Frontend
+- `npm run frontend:dev` - Iniciar frontend en desarrollo
+- `npm run frontend:build` - Compilar frontend para producción
+- `npm run frontend:preview` - Vista previa de producción
+
+### Prisma
+- `npm run prisma:generate` - Generar Prisma Client
+- `npm run prisma:migrate` - Crear y aplicar migraciones
+- `npm run prisma:studio` - Abrir Prisma Studio
+
+### Docker
+- `docker-compose up -d` - Levantar todos los servicios
+- `docker-compose down` - Detener todos los servicios
+- `docker-compose logs -f` - Ver logs
+
+## 🏗️ Estructura del Proyecto
+```
+todo-app-backend/
+├── src/
+│   ├── common/           # Decoradores, filtros, pipes comunes
+│   ├── config/           # Configuración de la aplicación
+│   ├── modules/
+│   │   ├── auth/         # Módulo de autenticación
+│   │   ├── prisma/       # Módulo de Prisma
+│   │   └── todo/         # Módulo de tareas
+│   ├── frontend/         # Aplicación React
+│   │   ├── components/   # Componentes de React
+│   │   ├── contexts/     # Context API
+│   │   ├── hooks/        # Custom hooks
+│   │   ├── services/     # Servicios API
+│   │   ├── types/        # Tipos TypeScript
+│   │   └── utils/        # Utilidades
+│   └── main.ts          # Entry point
+├── prisma/
+│   └── schema.prisma    # Schema de base de datos
+├── docker-compose.yml   # Configuración Docker
+├── Dockerfile          # Dockerfile para producción
+└── README.md
+```
+
+## 🔐 API Endpoints
+
+### Autenticación
+- `POST /v1/auth/register` - Registrar nuevo usuario
+- `POST /v1/auth/login` - Iniciar sesión
+- `GET /v1/auth/me` - Obtener usuario actual
+
+### Tareas
+- `POST /v1/todo/create` - Crear tarea
+- `GET /v1/todo/list` - Listar tareas (con paginación y filtros)
+- `GET /v1/todo/list/:id` - Obtener tarea por ID
+- `PATCH /v1/todo/update/:id` - Actualizar tarea
+- `DELETE /v1/todo/list/:id` - Eliminar tarea
+
+## 🧪 Testing
+```bash
+# Tests unitarios
+npm run test
+
+# Tests e2e
+npm run test:e2e
+
+# Cobertura
+npm run test:cov
+```
+
+## 🐳 Docker
+
+### Desarrollo con Docker
+```bash
+docker-compose up -d
+```
+
+### Producción
+```bash
+docker-compose -f docker-compose.yml up -d
+```
+
+## 📝 Tecnologías Utilizadas
+
+### Backend
+- NestJS 11
+- TypeScript 5.7
+- Prisma 6
+- PostgreSQL 16
+- JWT Authentication
+- Swagger/OpenAPI
+
+### Frontend
+- React 19
+- TypeScript 5.7
+- Vite 7
+- Tailwind CSS 3
+- Axios
+- Lucide React (iconos)
+
+## 👤 Autor
+
+Tu Nombre
+
+## 📄 Licencia
+
+UNLICENSED
