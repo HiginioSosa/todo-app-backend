@@ -12,7 +12,7 @@ Sistema de gestión de tareas (To-Do) con autenticación JWT que permite a los u
 - ✅ **Estadísticas** en tiempo real
 - ✅ **Prioridades** (Alta, Media, Baja)
 - ✅ **API RESTful** documentada con Swagger
-- ✅ **Tests completos** (91 tests unitarios y E2E)
+- ✅ **Tests unitarios completos** (57 tests)
 
 ## 📁 Estructura del Proyecto
 
@@ -39,7 +39,6 @@ todo-app-backend/
 │   ├── schema.prisma          # Esquema de base de datos
 │   ├── migrations/            # Migraciones de Prisma
 │   └── seed.ts                # Datos de prueba
-├── test/                      # Tests E2E
 └── docker-compose.yml         # Configuración de Docker
 
 ```
@@ -140,7 +139,3 @@ npm run test:watch
 - ✅ TodoController (20 tests)
 - ✅ TodoService (15 tests)
 - ✅ JWT Strategy (5 tests)
-
-> **Nota**: Los tests E2E requieren configuración adicional debido al rate limiting. Los tests unitarios cubren toda la funcionalidad del sistema.
-
-Para más detalles, consulta [TESTING.md](./TESTING.md)
