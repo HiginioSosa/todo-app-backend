@@ -5,18 +5,16 @@ WORKDIR /app
 
 # Copy package files
 COPY package*.json ./
-COPY prisma ./prisma/
 
-# Install dependencies
+# Install all dependencies (including dev dependencies for build)
 RUN npm ci
 
-# Copy source code
-COPY . .
-
-# Generate Prisma Client
+# Copy prisma schema and generate client
+COPY prisma ./prisma/
 RUN npx prisma generate
 
-# Build the application
+# Copy source code and build
+COPY . .
 RUN npm run build
 
 # Stage 2: Production
@@ -26,10 +24,14 @@ WORKDIR /app
 
 # Copy package files
 COPY package*.json ./
-COPY prisma ./prisma/
 
-# Install only production dependencies
-RUN npm ci --omit=dev
+# Install only production dependencies + ts-node for seed
+RUN npm ci --omit=dev && \
+    npm install -D ts-node @types/node && \
+    npm cache clean --force
+
+# Copy prisma directory (needed for migrations and seed)
+COPY prisma ./prisma/
 
 # Copy built application from builder
 COPY --from=builder /app/dist ./dist
@@ -40,4 +42,4 @@ COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 EXPOSE 3000
 
 # Start the application
-CMD ["npm", "run", "start:prod"]
+CMD ["node", "dist/main.js"]

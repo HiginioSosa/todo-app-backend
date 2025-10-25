@@ -1,23 +1,23 @@
-version: "3.8"
-
 services:
   postgres:
     image: postgres:16-alpine
     container_name: todo-app-postgres
-    restart: always
+    restart: unless-stopped
     ports:
       - "5432:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres123
       POSTGRES_DB: todo_db
+      PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d todo_db"]
       interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 10s
     networks:
       - todo-network
 
@@ -26,23 +26,40 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: todo-app-backend
-    restart: always
+    restart: unless-stopped
     ports:
       - "3000:3000"
     environment:
       DATABASE_URL: postgresql://postgres:postgres123@postgres:5432/todo_db?schema=public
-      JWT_SECRET: ${JWT_SECRET}
-      JWT_EXPIRATION: ${JWT_EXPIRATION}
+      JWT_SECRET: ${JWT_SECRET:-change-this-secret-in-production}
+      JWT_EXPIRATION: ${JWT_EXPIRATION:-7d}
       NODE_ENV: production
+      PORT: 3000
     depends_on:
       postgres:
         condition: service_healthy
     networks:
       - todo-network
-    command: sh -c "npx prisma migrate deploy && npm run start:prod"
+    command: sh -c "npx prisma migrate deploy && npx prisma db seed && node dist/main.js"
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: todo-app-frontend
+    restart: unless-stopped
+    ports:
+      - "5173:80"
+    depends_on:
+      - app
+    networks:
+      - todo-network
+    environment:
+      - VITE_API_URL=http://localhost:3000
 
 volumes:
   postgres_data:
+    driver: local
 
 networks:
   todo-network:
