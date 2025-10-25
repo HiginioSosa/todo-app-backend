@@ -69,34 +69,32 @@ async function bootstrap() {
       }),
     );
 
-    // Swagger documentation - Solo en desarrollo
-    if (process.env.NODE_ENV !== 'production') {
-      const config = new DocumentBuilder()
-        .setTitle('To-Do App API')
-        .setDescription('REST API para gestión de tareas (To-Do App)')
-        .setVersion('1.0')
-        .addBearerAuth(
-          {
-            type: 'http',
-            scheme: 'bearer',
-            bearerFormat: 'JWT',
-            name: 'JWT',
-            description: 'Enter JWT token',
-            in: 'header',
-          },
-          'JWT-auth',
-        )
-        .build();
-
-      const document = SwaggerModule.createDocument(app, config);
-      SwaggerModule.setup('api/docs', app, document, {
-        swaggerOptions: {
-          persistAuthorization: true,
+    // Swagger documentation
+    const config = new DocumentBuilder()
+      .setTitle('To-Do App API')
+      .setDescription('REST API para gestión de tareas (To-Do App)')
+      .setVersion('1.0')
+      .addBearerAuth(
+        {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+          name: 'JWT',
+          description: 'Enter JWT token',
+          in: 'header',
         },
-      });
+        'JWT-auth',
+      )
+      .build();
 
-      logger.log(`📚 Swagger documentation: http://localhost:${process.env.PORT || 3000}/api/docs`);
-    }
+    const document = SwaggerModule.createDocument(app, config);
+    SwaggerModule.setup('api/docs', app, document, {
+      swaggerOptions: {
+        persistAuthorization: true,
+      },
+    });
+
+    logger.log(`📚 Swagger documentation: http://localhost:${process.env.PORT || 3000}/api/docs`);
 
     const port = process.env.PORT || 3000;
     await app.listen(port);

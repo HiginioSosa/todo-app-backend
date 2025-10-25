@@ -21,7 +21,7 @@ docker-compose up -d
 ¡Listo! La aplicación estará disponible en:
 - **Frontend**: http://localhost:5173
 - **API**: http://localhost:3000
-- **Docs**: http://localhost:3000/api/docs
+- **Docs (Swagger)**: http://localhost:3000/api/docs
 
 **Credenciales demo:**
 - Email: `demo@example.com`
@@ -76,3 +76,19 @@ npm run frontend:dev  # Frontend en http://localhost:5173
 - **Frontend**: React, TypeScript, Vite, Tailwind CSS
 - **Auth**: JWT
 - **Docs**: Swagger/OpenAPI
+
+## 🧪 Testing
+
+```bash
+# Ejecutar tests del backend
+npm run test:backend
+
+# Ejecutar todos los tests unitarios
+npm run test:unit
+
+# Tests con cobertura
+npm run test:cov
+
+# Tests en modo watch
+npm run test:watch
+```

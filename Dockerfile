@@ -13,8 +13,13 @@ RUN npm ci
 COPY prisma ./prisma/
 RUN npx prisma generate
 
-# Copy source code and build
+# Copy source code
 COPY . .
+
+# Run tests
+RUN npm run test:backend
+
+# Build application
 RUN npm run build
 
 # Stage 2: Production
