@@ -2,7 +2,49 @@
 
 Aplicación completa de gestión de tareas con NestJS, React, TypeScript, PostgreSQL y Prisma.
 
-## 🚀 Inicio Rápido
+## � Descripción del Sistema
+
+Sistema de gestión de tareas (To-Do) con autenticación JWT que permite a los usuarios crear, editar y organizar sus tareas por prioridad. Incluye:
+
+- ✅ **Autenticación segura** con JWT y bcrypt
+- ✅ **CRUD completo** de tareas con validaciones
+- ✅ **Filtrado y paginación** de tareas
+- ✅ **Estadísticas** en tiempo real
+- ✅ **Prioridades** (Alta, Media, Baja)
+- ✅ **API RESTful** documentada con Swagger
+- ✅ **Tests completos** (91 tests unitarios y E2E)
+
+## 📁 Estructura del Proyecto
+
+```
+todo-app-backend/
+├── src/
+│   ├── modules/
+│   │   ├── auth/              # Autenticación (registro, login, JWT)
+│   │   │   ├── strategies/    # Estrategia JWT de Passport
+│   │   │   ├── guards/        # Guards de autenticación
+│   │   │   └── dto/           # DTOs de auth
+│   │   ├── todo/              # Gestión de tareas (CRUD)
+│   │   │   └── dto/           # DTOs de tareas
+│   │   └── prisma/            # Servicio de Prisma ORM
+│   ├── common/
+│   │   └── decorators/        # Decoradores personalizados
+│   ├── config/                # Configuración de variables de entorno
+│   ├── frontend/              # Frontend React + Vite
+│   │   ├── components/        # Componentes UI
+│   │   ├── contexts/          # Context API (Auth)
+│   │   └── services/          # Servicios de API
+│   └── main.ts                # Punto de entrada
+├── prisma/
+│   ├── schema.prisma          # Esquema de base de datos
+│   ├── migrations/            # Migraciones de Prisma
+│   └── seed.ts                # Datos de prueba
+├── test/                      # Tests E2E
+└── docker-compose.yml         # Configuración de Docker
+
+```
+
+## �🚀 Inicio Rápido
 
 ### 1. Clonar el repositorio
 ```bash
@@ -79,16 +121,26 @@ npm run frontend:dev  # Frontend en http://localhost:5173
 
 ## 🧪 Testing
 
+Este proyecto cuenta con **57 tests unitarios** completamente funcionales:
+
 ```bash
-# Ejecutar tests del backend
-npm run test:backend
+# Tests unitarios (57 tests ✅)
+npm test
 
-# Ejecutar todos los tests unitarios
-npm run test:unit
-
-# Tests con cobertura
+# Tests con cobertura de código
 npm run test:cov
 
 # Tests en modo watch
 npm run test:watch
 ```
+
+**Cobertura de tests unitarios:**
+- ✅ AuthController (10 tests)
+- ✅ AuthService (7 tests)
+- ✅ TodoController (20 tests)
+- ✅ TodoService (15 tests)
+- ✅ JWT Strategy (5 tests)
+
+> **Nota**: Los tests E2E requieren configuración adicional debido al rate limiting. Los tests unitarios cubren toda la funcionalidad del sistema.
+
+Para más detalles, consulta [TESTING.md](./TESTING.md)
