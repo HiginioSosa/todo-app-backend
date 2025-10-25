@@ -49,15 +49,11 @@ export function useTodos() {
       setIsLoading(true);
       setError(null);
       try {
-        // Limpiar filtros vacíos
-        const cleanFilters: Record<string, string | boolean> = {};
-        if (filters.prioridad) cleanFilters.prioridad = filters.prioridad;
-        if (filters.finalizada !== undefined) cleanFilters.finalizada = filters.finalizada;
-
         const response: TodoListResponse = await todoApi.getAll({
           pagina: page,
           limite: 10,
-          ...cleanFilters,
+          prioridad: filters.prioridad,
+          finalizada: filters.finalizada,
         });
 
         setTodos(response.data);
@@ -89,14 +85,11 @@ export function useTodos() {
     setIsLoading(true);
     setError(null);
     try {
-      const cleanFilters: Record<string, string | boolean> = {};
-      if (filters.prioridad) cleanFilters.prioridad = filters.prioridad;
-      if (filters.finalizada !== undefined) cleanFilters.finalizada = filters.finalizada;
-
       const response: TodoListResponse = await todoApi.getAll({
         pagina: page,
         limite: 10,
-        ...cleanFilters,
+        prioridad: filters.prioridad,
+        finalizada: filters.finalizada,
       });
       setTodos(response.data);
       setTotalPages(response.meta.totalPages);

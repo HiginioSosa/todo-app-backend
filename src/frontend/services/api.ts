@@ -72,19 +72,21 @@ export const todoApi = {
     pagina?: number;
     limite?: number;
     buscar?: string;
+    prioridad?: string;
     finalizada?: boolean;
   }): Promise<TodoListResponse> => {
     const queryParams: Record<string, string> = {};
 
-    if (params?.pagina) queryParams.pagina = params.pagina.toString();
-    if (params?.limite) queryParams.limite = params.limite.toString();
+    if (params?.pagina) queryParams.page = params.pagina.toString();
+    if (params?.limite) queryParams.limit = params.limite.toString();
     if (params?.buscar) queryParams.buscar = params.buscar;
+    if (params?.prioridad) queryParams.prioridad = params.prioridad;
     if (params?.finalizada !== undefined) {
       // Convertir explícitamente a string para evitar que axios omita false
       queryParams.finalizada = params.finalizada ? 'true' : 'false';
     }
 
-    const response = await api.get<TodoListResponse>('/v1/todo/list', {
+    const response = await api.get<TodoListResponse>('/todo/list', {
       params: queryParams,
     });
     return response.data;
