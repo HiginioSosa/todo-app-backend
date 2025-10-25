@@ -16,8 +16,8 @@ RUN npx prisma generate
 # Copy source code
 COPY . .
 
-# Run tests
-RUN npm run test:backend
+# Run unit tests
+RUN npm test
 
 # Build application
 RUN npm run build
