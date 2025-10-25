@@ -40,6 +40,36 @@ docker-compose down
 docker-compose down && docker-compose up -d --build
 ```
 
+## 💻 Desarrollo Local (sin Docker)
+
+Si prefieres ejecutar la aplicación localmente:
+
+### 1. Instalar dependencias
+```bash
+npm install
+```
+
+### 2. Levantar solo la base de datos con Docker
+```bash
+docker-compose up postgres -d
+```
+
+### 3. Ejecutar migraciones y seed
+```bash
+npm run prisma:migrate
+npm run prisma:seed
+```
+
+### 4. Ejecutar la aplicación
+```bash
+# Backend + Frontend simultáneamente
+npm run dev:all
+
+# O por separado:
+npm run start:dev     # Backend en http://localhost:3000
+npm run frontend:dev  # Frontend en http://localhost:5173
+```
+
 ## 🏗️ Tecnologías
 
 - **Backend**: NestJS, TypeScript, Prisma, PostgreSQL
