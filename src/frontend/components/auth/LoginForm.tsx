@@ -2,11 +2,23 @@ import { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
+import { PasswordInput } from '../ui/PasswordInput';
 
+/**
+ * LoginForm component props
+ */
 interface LoginFormProps {
+  /** Callback to switch to register mode */
   onToggleMode: () => void;
 }
 
+/**
+ * Login form component with email and password fields.
+ * Includes validation, error handling, and loading states.
+ *
+ * @param {LoginFormProps} props - Component props
+ * @returns {JSX.Element} Login form
+ */
 export function LoginForm({ onToggleMode }: LoginFormProps) {
   const { login } = useAuth();
   const [email, setEmail] = useState('');
@@ -30,15 +42,15 @@ export function LoginForm({ onToggleMode }: LoginFormProps) {
   };
 
   return (
-    <div className="w-full max-w-md">
+    <div className="w-full max-w-md animate-fadeIn">
       <div className="text-center mb-8">
         <h2 className="text-3xl font-bold text-gray-800 mb-2">Iniciar Sesión</h2>
         <p className="text-gray-600">Ingresa tus credenciales para continuar</p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-5">
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg animate-fadeIn">
             {error}
           </div>
         )}
@@ -51,34 +63,35 @@ export function LoginForm({ onToggleMode }: LoginFormProps) {
           onChange={(e) => setEmail(e.target.value)}
           required
           disabled={isLoading}
+          autoComplete="email"
         />
 
-        <Input
-          type="password"
+        <PasswordInput
           label="Contraseña"
           placeholder="••••••••"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
           disabled={isLoading}
+          autoComplete="current-password"
         />
 
         <Button
           type="submit"
           variant="primary"
           size="lg"
-          className="w-full"
+          className="w-full mt-6"
           isLoading={isLoading}
         >
           Iniciar Sesión
         </Button>
 
-        <div className="text-center text-sm text-gray-600">
+        <div className="text-center text-sm text-gray-600 pt-2">
           ¿No tienes una cuenta?{' '}
           <button
             type="button"
             onClick={onToggleMode}
-            className="text-blue-500 hover:text-blue-600 font-semibold"
+            className="text-primary-600 hover:text-primary-700 font-semibold transition-colors"
           >
             Regístrate aquí
           </button>

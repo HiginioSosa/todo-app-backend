@@ -1,6 +1,11 @@
 import { Injectable, OnModuleInit, OnModuleDestroy, Logger } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 
+/**
+ * Servicio de base de datos Prisma que extiende PrismaClient.
+ * Maneja el ciclo de vida de la conexión a la base de datos y proporciona métodos de utilidad.
+ * Configurado con logging basado en eventos y gestión automática de conexión.
+ */
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
   private readonly logger = new Logger(PrismaService.name);
@@ -17,6 +22,13 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
     });
   }
 
+  /**
+   * Hook de ciclo de vida llamado cuando el módulo es inicializado.
+   * Conecta a la base de datos y configura los listeners de eventos.
+   *
+   * @returns {Promise<void>} Se resuelve cuando la conexión es establecida
+   * @throws {Error} Si la conexión a la base de datos falla
+   */
   async onModuleInit() {
     try {
       await this.$connect();
@@ -40,11 +52,24 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
     }
   }
 
+  /**
+   * Hook de ciclo de vida llamado cuando el módulo es destruido.
+   * Desconecta de la base de datos de forma elegante.
+   *
+   * @returns {Promise<void>} Se resuelve cuando la desconexión es completa
+   */
   async onModuleDestroy() {
     await this.$disconnect();
     this.logger.log('Disconnected from database');
   }
 
+  /**
+   * Limpia todos los datos de la base de datos.
+   * Solo permitido en entornos no productivos para propósitos de prueba.
+   *
+   * @returns {Promise<unknown[]>} Array de resultados de eliminación
+   * @throws {Error} Si se llama en entorno de producción
+   */
   async cleanDatabase() {
     if (process.env.NODE_ENV === 'production') {
       throw new Error('Cannot clean database in production!');
@@ -66,7 +91,10 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
   }
 
   /**
-   * Utility method to check database connection
+   * Verifica si la conexión a la base de datos está activa.
+   * Ejecuta una consulta simple para verificar la conectividad.
+   *
+   * @returns {Promise<boolean>} True si está conectado, false en caso contrario
    */
   async isConnected(): Promise<boolean> {
     try {
@@ -78,7 +106,11 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
   }
 
   /**
-   * Enable query logging
+   * Habilita el logging detallado de consultas.
+   * Registra consultas SQL, parámetros y duración de ejecución.
+   * Útil para debugging y monitoreo de rendimiento.
+   *
+   * @returns {void}
    */
   enableQueryLogging() {
     this.$on('query' as never, (e: unknown) => {

@@ -1,6 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Priority } from './create-todo.dto';
 
+/**
+ * Data Transfer Object for todo responses.
+ * Represents a complete todo entity.
+ */
 export class TodoResponseDto {
   @ApiProperty({
     example: 'uuid-string',

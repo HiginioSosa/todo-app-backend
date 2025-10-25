@@ -1,5 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 
+/**
+ * Data Transfer Object for user profile responses.
+ * Excludes sensitive information like password.
+ */
 export class UserResponseDto {
   @ApiProperty({
     example: 'uuid-string',

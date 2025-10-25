@@ -1,6 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { TodoResponseDto } from './todo-response.dto';
 
+/**
+ * Data Transfer Object for paginated todo list responses.
+ * Includes data array and pagination metadata.
+ */
 export class TodoListResponseDto {
   @ApiProperty({
     type: [TodoResponseDto],

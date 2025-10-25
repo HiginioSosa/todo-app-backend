@@ -12,12 +12,12 @@ export function Dashboard() {
   const { user, logout } = useAuth();
   const {
     todos,
+    stats,
     isLoading,
     error,
     page,
     setPage,
     totalPages,
-    total,
     filters,
     setFilters,
     createTodo,
@@ -46,81 +46,94 @@ export function Dashboard() {
     setEditingTodo(todo);
   };
 
-  const completedCount = todos.filter((t) => t.finalizada).length;
-  const pendingCount = todos.filter((t) => !t.finalizada).length;
+  // Estadísticas globales - SIEMPRE muestran el total de todas las tareas del usuario
+  // Los filtros NO afectan estas estadísticas, solo afectan la lista de tareas mostrada
+  const totalCount = stats.total;
+  const completedCount = stats.completadas;
+  const pendingCount = stats.pendientes;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-600 to-blue-600 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-cyan-500 via-teal-500 to-cyan-600 p-4 sm:p-6 lg:p-8 animate-gradient">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-          <div className="flex justify-between items-center">
+        <div className="glass rounded-2xl shadow-2xl p-6 sm:p-8 mb-6 animate-fadeIn border border-white/20">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
-              <h1 className="text-3xl font-bold text-gray-800">
+              <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-1">
                 ¡Hola, {user?.nombre}! 👋
               </h1>
-              <p className="text-gray-600 mt-1">Gestiona tus tareas de forma eficiente</p>
+              <p className="text-gray-600">Gestiona tus tareas de forma eficiente</p>
             </div>
-            <Button variant="danger" onClick={logout}>
-              <LogOut size={20} className="mr-2" />
-              Salir
+            <Button variant="danger" onClick={logout} className="flex items-center gap-2">
+              <LogOut size={20} />
+              <span>Salir</span>
             </Button>
           </div>
 
           {/* Estadísticas */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-            <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-5 border border-blue-200 hover-lift transition-all hover:shadow-lg">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-blue-600 font-semibold">Total</p>
-                  <p className="text-3xl font-bold text-blue-700">{total}</p>
+                  <p className="text-sm text-blue-700 font-semibold mb-1">Total</p>
+                  <p className="text-4xl font-bold text-blue-800">{totalCount}</p>
                 </div>
-                <AlertCircle size={40} className="text-blue-500 opacity-50" />
+                <div className="bg-blue-200/50 p-3 rounded-full">
+                  <AlertCircle size={32} className="text-blue-600" />
+                </div>
               </div>
             </div>
 
-            <div className="bg-yellow-50 rounded-lg p-4 border border-yellow-200">
+            <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-5 border border-orange-200 hover-lift transition-all hover:shadow-lg">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-yellow-600 font-semibold">Pendientes</p>
-                  <p className="text-3xl font-bold text-yellow-700">{pendingCount}</p>
+                  <p className="text-sm text-orange-700 font-semibold mb-1">Pendientes</p>
+                  <p className="text-4xl font-bold text-orange-800">{pendingCount}</p>
                 </div>
-                <Circle size={40} className="text-yellow-500 opacity-50" />
+                <div className="bg-orange-200/50 p-3 rounded-full">
+                  <Circle size={32} className="text-orange-600" />
+                </div>
               </div>
             </div>
 
-            <div className="bg-green-50 rounded-lg p-4 border border-green-200">
+            <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-xl p-5 border border-emerald-200 hover-lift transition-all hover:shadow-lg">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-green-600 font-semibold">Completadas</p>
-                  <p className="text-3xl font-bold text-green-700">{completedCount}</p>
+                  <p className="text-sm text-emerald-700 font-semibold mb-1">Completadas</p>
+                  <p className="text-4xl font-bold text-emerald-800">{completedCount}</p>
                 </div>
-                <CheckCircle size={40} className="text-green-500 opacity-50" />
+                <div className="bg-emerald-200/50 p-3 rounded-full">
+                  <CheckCircle size={32} className="text-emerald-600" />
+                </div>
               </div>
             </div>
           </div>
         </div>
 
         {/* Acciones */}
-        <Card className="mb-6">
+        <Card className="mb-6 animate-slideIn">
           <div className="flex flex-wrap gap-3 justify-between items-center">
-            <div className="flex gap-3">
-              <Button variant="primary" onClick={() => setShowForm(true)}>
-                <Plus size={20} className="mr-2" />
-                Nueva Tarea
+            <div className="flex flex-wrap gap-3">
+              <Button variant="primary" onClick={() => setShowForm(true)} className="flex items-center gap-2">
+                <Plus size={20} />
+                <span>Nueva Tarea</span>
               </Button>
 
               <Button
                 variant="secondary"
                 onClick={() => setShowFilters(!showFilters)}
+                className="flex items-center gap-2"
               >
-                <Filter size={20} className="mr-2" />
-                Filtros
+                <Filter size={20} />
+                <span>Filtros</span>
               </Button>
             </div>
 
             {Object.keys(filters).length > 0 && (
-              <Button variant="secondary" size="sm" onClick={() => setFilters({})}>
+              <Button variant="ghost" size="sm" onClick={() => {
+                setFilters({});
+                setPage(1);
+              }}>
                 Limpiar filtros
               </Button>
             )}
@@ -128,7 +141,7 @@ export function Dashboard() {
 
           {/* Panel de Filtros */}
           {showFilters && (
-            <div className="mt-4 pt-4 border-t border-gray-200">
+            <div className="mt-4 pt-4 border-t border-gray-200 animate-fadeIn">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -136,13 +149,18 @@ export function Dashboard() {
                   </label>
                   <select
                     value={filters.prioridad || ''}
-                    onChange={(e) =>
-                      setFilters({
-                        ...filters,
-                        prioridad: e.target.value as Priority | undefined,
-                      })
-                    }
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      const newFilters = { ...filters };
+                      if (value) {
+                        newFilters.prioridad = value as Priority;
+                      } else {
+                        delete newFilters.prioridad;
+                      }
+                      setFilters(newFilters);
+                      setPage(1); // Reset a la primera página
+                    }}
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all hover:border-gray-400"
                   >
                     <option value="">Todas</option>
                     <option value="ALTA">Alta</option>
@@ -163,16 +181,18 @@ export function Dashboard() {
                         ? 'true'
                         : 'false'
                     }
-                    onChange={(e) =>
-                      setFilters({
-                        ...filters,
-                        finalizada:
-                          e.target.value === ''
-                            ? undefined
-                            : e.target.value === 'true',
-                      })
-                    }
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      const newFilters = { ...filters };
+                      if (value === '') {
+                        delete newFilters.finalizada;
+                      } else {
+                        newFilters.finalizada = value === 'true';
+                      }
+                      setFilters(newFilters);
+                      setPage(1); // Reset a la primera página
+                    }}
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all hover:border-gray-400"
                   >
                     <option value="">Todas</option>
                     <option value="false">Pendientes</option>
@@ -185,7 +205,7 @@ export function Dashboard() {
         </Card>
 
         {/* Lista de Tareas */}
-        <Card>
+        <Card className="animate-slideIn">
           <TodoList
             todos={todos}
             isLoading={isLoading}

@@ -6,6 +6,7 @@ import type {
   User,
   Todo,
   TodoListResponse,
+  TodoStatsResponse,
   CreateTodoDto,
   UpdateTodoDto,
 } from '../types';
@@ -62,13 +63,30 @@ export const authApi = {
 
 // Todo endpoints
 export const todoApi = {
+  getStats: async (): Promise<TodoStatsResponse> => {
+    const response = await api.get<TodoStatsResponse>('/todo/stats');
+    return response.data;
+  },
+
   getAll: async (params?: {
-    page?: number;
-    limit?: number;
-    prioridad?: string;
+    pagina?: number;
+    limite?: number;
+    buscar?: string;
     finalizada?: boolean;
   }): Promise<TodoListResponse> => {
-    const response = await api.get<TodoListResponse>('/todo/list', { params });
+    const queryParams: Record<string, string> = {};
+
+    if (params?.pagina) queryParams.pagina = params.pagina.toString();
+    if (params?.limite) queryParams.limite = params.limite.toString();
+    if (params?.buscar) queryParams.buscar = params.buscar;
+    if (params?.finalizada !== undefined) {
+      // Convertir explícitamente a string para evitar que axios omita false
+      queryParams.finalizada = params.finalizada ? 'true' : 'false';
+    }
+
+    const response = await api.get<TodoListResponse>('/v1/todo/list', {
+      params: queryParams,
+    });
     return response.data;
   },
 

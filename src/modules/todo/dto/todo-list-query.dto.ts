@@ -1,8 +1,12 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsOptional, IsEnum, IsBoolean, IsInt, Min, Max } from 'class-validator';
-import { Type } from 'class-transformer';
+import { IsOptional, IsEnum, IsInt, Min, Max, IsBoolean } from 'class-validator';
+import { Type, Transform } from 'class-transformer';
 import { Priority } from './create-todo.dto';
 
+/**
+ * Data Transfer Object for todo list query parameters.
+ * Supports pagination and filtering by priority and completion status.
+ */
 export class TodoListQueryDto {
   @ApiPropertyOptional({
     example: 1,
@@ -40,11 +44,17 @@ export class TodoListQueryDto {
   prioridad?: Priority;
 
   @ApiPropertyOptional({
-    example: false,
     description: 'Filtrar por estado de finalización',
+    type: Boolean,
+    example: false,
+  })
+  @Transform(({ value }) => {
+    if (value === 'true') return true;
+    if (value === 'false') return false;
+    if (typeof value === 'boolean') return value;
+    return undefined;
   })
   @IsOptional()
-  @Type(() => Boolean)
   @IsBoolean()
   finalizada?: boolean;
 }

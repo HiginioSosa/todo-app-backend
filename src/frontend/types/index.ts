@@ -43,6 +43,15 @@ export interface TodoListResponse {
   };
 }
 
+export interface TodoStatsResponse {
+  total: number;
+  pendientes: number;
+  completadas: number;
+  alta: number;
+  media: number;
+  baja: number;
+}
+
 export interface CreateTodoDto {
   nombre: string;
   prioridad: Priority;

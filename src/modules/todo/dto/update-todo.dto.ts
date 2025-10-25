@@ -1,7 +1,12 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IsString, IsBoolean, IsEnum, IsOptional, MinLength, MaxLength } from 'class-validator';
+import { Transform, Type } from 'class-transformer';
 import { Priority } from './create-todo.dto';
 
+/**
+ * Data Transfer Object for updating a todo.
+ * All fields are optional for partial updates.
+ */
 export class UpdateTodoDto {
   @ApiPropertyOptional({
     example: 'Completar el proyecto de NestJS - Actualizado',
@@ -10,9 +15,10 @@ export class UpdateTodoDto {
     maxLength: 255,
   })
   @IsOptional()
-  @IsString()
-  @MinLength(1)
-  @MaxLength(255)
+  @IsString({ message: 'El nombre debe ser una cadena de texto' })
+  @MinLength(1, { message: 'El nombre debe tener al menos 1 carácter' })
+  @MaxLength(255, { message: 'El nombre no puede exceder 255 caracteres' })
+  @Transform(({ value }) => value?.trim())
   nombre?: string;
 
   @ApiPropertyOptional({
@@ -21,7 +27,7 @@ export class UpdateTodoDto {
     enum: Priority,
   })
   @IsOptional()
-  @IsEnum(Priority)
+  @IsEnum(Priority, { message: 'La prioridad debe ser BAJA, MEDIA o ALTA' })
   prioridad?: Priority;
 
   @ApiPropertyOptional({
@@ -29,6 +35,7 @@ export class UpdateTodoDto {
     description: 'Estado de finalización de la tarea',
   })
   @IsOptional()
-  @IsBoolean()
+  @IsBoolean({ message: 'El campo finalizada debe ser un valor booleano' })
+  @Type(() => Boolean)
   finalizada?: boolean;
 }
